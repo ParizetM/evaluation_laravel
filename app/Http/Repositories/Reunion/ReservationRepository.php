@@ -26,6 +26,7 @@ class ReservationRepository
     /**
      * Save the model instance
      * @param  Reservation  $reservation
+     * @param  array<mixed>  $inputs
      * @return  Reservation
      */
     private function save(Reservation $reservation, array $inputs): Reservation
@@ -80,10 +81,7 @@ class ReservationRepository
      * @param  Reservation  $reservation
      * @return void
      */
-    public function undelete(Reservation $reservation)
-    {
-        $reservation->restore();
-    }
+
 
     /**
      * Return a JSON for index datatable

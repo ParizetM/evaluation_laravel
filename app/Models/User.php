@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Models\Reunion\Reservation;
 use App\Traits\Identity;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
@@ -51,11 +53,10 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use HasRolesAndAbilities;
-    use Identity;
     use Notifiable;
 
     /**
@@ -95,9 +96,9 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the reservations for the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Reservation,$this>
      */
-    public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }

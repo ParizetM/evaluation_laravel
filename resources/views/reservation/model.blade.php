@@ -1,22 +1,25 @@
 <x-app-layout>
+  @php
+            $isset = isset($reservation)&&$reservation->exists ? true : false;
+          @endphp
   <div class="py-12 bg-gray-100 dark:bg-gray-900 min-h-screen">
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900 dark:text-gray-100">
           <h2 class="text-2xl font-semibold mb-6">
-            {{ isset($reservation) ? 'Modifier la réservation' : 'Faire une réservation' }}
+            {{ $isset ? 'Modifier la réservation' : 'Faire une réservation' }}
           </h2>
 
-          <form method="POST" action="{{ isset($reservation) ? route('reservation.update', $reservation->id) : route('reservation.store') }}">
+          <form method="POST" action="{{ $isset ? route('reservation.update', $reservation->id) : route('reservation.store') }}">
             @csrf
-            @if(isset($reservation))
+            @if($isset)
               @method('PUT')
             @endif
 
             <div class="mb-4">
               <x-input-label for="reservation_date" :value="'Date de réservation'" />
               <x-text-input type="date" name="reservation_date" id="reservation_date"
-                :value="old('reservation_date', isset($reservation) ? date('Y-m-d', strtotime($reservation->start_time)) : '')"
+                :value="old('reservation_date', $isset ? date('Y-m-d', strtotime($reservation->start_time)) : '')"
                 required class="w-full md:w-1/2" />
               @error('reservation_date')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -27,7 +30,7 @@
               <div>
                 <x-input-label for="start_time" :value="'Heure de début'" />
                 <x-text-input type="time" name="start_time" id="start_time"
-                  :value="old('start_time', isset($reservation) ? date('H:i', strtotime($reservation->start_time)) : '')"
+                  :value="old('start_time', $isset ? date('H:i', strtotime($reservation->start_time)) : '')"
                   required class="w-full" />
                 @error('start_time')
                   <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -37,7 +40,7 @@
               <div>
                 <x-input-label for="end_time" :value="'Heure de fin'" />
                 <x-text-input type="time" name="end_time" id="end_time"
-                  :value="old('end_time', isset($reservation) ? date('H:i', strtotime($reservation->end_time)) : '')"
+                  :value="old('end_time', $isset ? date('H:i', strtotime($reservation->end_time)) : '')"
                   required class="w-full" />
                 @error('end_time')
                   <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -52,7 +55,7 @@
                 @foreach($salles as $salle)
                   <option value="{{ $salle->id }}"
 
-                      {{ old('salle_id', isset($reservation) ? $reservation->salle_id : '') == $salle->id ? 'selected' : '' }}
+                      {{ old('salle_id', $isset ? $reservation->salle_id : '') == $salle->id ? 'selected' : '' }}
                       {{ (isset($from_salle)&&$from_salle->id == $salle->id) ? 'selected' : '' }}
                       data-salle-id="{{ $salle->id }}"
                       class="salle-option">
@@ -73,7 +76,7 @@
               </a>
               <button type="submit" id="submit-button"
                   class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md">
-                {{ isset($reservation) ? 'Mettre à jour' : 'Réserver' }}
+                {{ $isset ? 'Mettre à jour' : 'Réserver' }}
               </button>
             </div>
           </form>

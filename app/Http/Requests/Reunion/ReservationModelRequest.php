@@ -12,12 +12,12 @@ class ReservationModelRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return env('APP_ENV') == 'testing'
-            ? true
-            : Auth::user()->can('reservation-create');
-    }
+    // public function authorize()
+    // {
+    //     return env('APP_ENV') == 'testing'
+    //         ? true
+    //         : Auth::user()->can('reservation-create');
+    // }
 
     /**
      * Get the validation rules that apply to the request.

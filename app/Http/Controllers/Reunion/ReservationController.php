@@ -94,10 +94,15 @@ class ReservationController extends Controller
      */
     public function create(Request $request)
     {
-        $salle_id = $request->query('salle') ?? null;
+        $salle_id = $request->query('salle');
+        $salle_id = is_numeric($salle_id) ? (int)$salle_id : null;
+
         if ($this->can(self::ABILITY . '-create')) {
-            return $this->model(null, 'create', $salle_id);
+            $reservation = new Reservation();
+            return $this->model($reservation, 'create', $salle_id);
         }
+
+        return null;
     }
 
 
@@ -181,25 +186,7 @@ class ReservationController extends Controller
         }
     }
 
-    /**
-     * Restaure un �l�ment supprim�
-     *
-     * @example Penser � utiliser un bind dans le web.php
-     *          Route::bind('reservation_id', function ($reservation_id) {
-     *              return Reservation::onlyTrashed()->find($reservation_id);
-     *          });
-     * @param  Reservation $reservation
-     * @return RedirectResponse|void
-     */
-    public function undelete(Reservation $reservation)
-    {
-        if ($this->can(self::ABILITY . '-delete')) {
-            $this->service->undelete($reservation);
-            Session::put('ok', 'Restauration effectuée');
 
-            return redirect(route(self::PATH_VIEWS . '.mes_reservations'));
-        }
-    }
 
     /**
      * Renvoie la liste des Reservation au format JSON pour leur gestion
@@ -220,7 +207,6 @@ class ReservationController extends Controller
      *
      * @return array<string, mixed>
      *
-     * @throws InvalidArgumentException
      */
     private function data(?Reservation $reservation, string $ability): array
     {
@@ -234,6 +220,7 @@ class ReservationController extends Controller
     /**
      * @param Reservation $reservation|null
      * @param string $ability
+     * @param int|null $salle_id
      * @return View|Factory|null
      * @throws BindingResolutionException
      * @throws RouteNotFoundException

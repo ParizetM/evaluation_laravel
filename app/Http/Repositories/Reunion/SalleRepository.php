@@ -26,6 +26,7 @@ class SalleRepository
     /**
      * Save the model instance
      * @param  Salle  $salle
+     * @param  array<mixed>  $inputs
      * @return  Salle
      */
     private function save(Salle $salle, array $inputs): Salle

@@ -188,8 +188,6 @@ class SalleController extends Controller
      * @param string $ability
      *
      * @return array<string, mixed>
-     *
-     * @throws InvalidArgumentException
      */
     private function data(?Salle $salle, string $ability): array
     {

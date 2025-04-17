@@ -5,22 +5,21 @@ namespace App\Models\Reunion;
 use App\Models\User;
 use App\Models\Reunion\Salle;
 use App\Traits\LogAction;
+use Database\Factories\Reunion\ReservationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
+    /** @use HasFactory<ReservationFactory> */
     use HasFactory;
     // use SoftDeletes;
-    use LogAction;
 
     /**
      * @var list<string>
      */
-    protected $appends = [
-        'actions',
-    ];
+
 
     /**
      * @var list<string>
@@ -35,15 +34,12 @@ class Reservation extends Model
     /**
      * @return string
      */
-    public function getActionsAttribute()
-    {
-        return '';
-    }
+
 
     /**
      * A reservation belongs to a user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User,$this>
      */
     public function user()
     {
@@ -53,10 +49,49 @@ class Reservation extends Model
     /**
      * A reservation belongs to a salle.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Salle,$this>
      */
     public function salle()
     {
         return $this->belongsTo(Salle::class);
+    }
+    /**
+     * Get the user_id attribute.
+     *
+     * @return int
+     */
+    public function getUserIdAttribute(): int
+    {
+        return $this->attributes['user_id'] ?? 0;
+    }
+
+    /**
+     * Get the salle_id attribute.
+     *
+     * @return int
+     */
+    public function getSalleIdAttribute(): int
+    {
+        return $this->attributes['salle_id'] ?? 0;
+    }
+
+    /**
+     * Get the start_time attribute.
+     *
+     * @return string
+     */
+    public function getStartTimeAttribute(): string
+    {
+        return $this->attributes['start_time'] ?? '';
+    }
+
+    /**
+     * Get the end_time attribute.
+     *
+     * @return string
+     */
+    public function getEndTimeAttribute(): string
+    {
+        return $this->attributes['end_time'] ?? '';
     }
 }

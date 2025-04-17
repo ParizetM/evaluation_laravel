@@ -88,14 +88,7 @@ class ReservationService
      * @param  Reservation  $reservation
      * @return void
      */
-    public function undelete(Reservation $reservation)
-    {
-        //
-        // Règles de gestion à appliquer avant l'enregistrement en base
-        //
 
-        $this->repository->undelete($reservation);
-    }
 
     /**
      * Return a JSON for index datatable

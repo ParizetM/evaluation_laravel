@@ -3,15 +3,16 @@
 namespace App\Models\Reunion;
 
 use App\Traits\LogAction;
+use Database\Factories\Reunion\SalleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Salle extends Model
 {
+    /** @use HasFactory<SalleFactory> */
     use HasFactory;
     use SoftDeletes;
-    use LogAction;
 
     /**
      * @var list<string>
@@ -21,6 +22,7 @@ class Salle extends Model
         'capacite',
         'surface',
     ];
+
 
     /**
      * @var list<string>
@@ -40,7 +42,7 @@ class Salle extends Model
     /**
      * Une salle peut avoir plusieurs réservations.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Reservation,$this>
      */
     public function reservations()
     {
@@ -54,7 +56,7 @@ class Salle extends Model
      * @param string $end
      * @return bool
      */
-    public function isAvailableFor($start, $end)
+    public function isAvailableFor($start, $end): bool
     {
         return !$this->reservations()
             ->where(function ($query) use ($start, $end) {
@@ -66,5 +68,29 @@ class Salle extends Model
                       });
             })
             ->exists();
+    }
+    /**
+     * @return string
+     * @param string $value
+     */
+    public function getSurfaceAttribute($value): string
+    {
+        return $value;
+    }
+    /**
+     * @return string
+     * @param string $value
+     */
+    public function getCapaciteAttribute($value): string
+    {
+        return $value;
+    }
+    /**
+     * @return string
+     * @param string $value
+     */
+    public function getNomAttribute($value): string
+    {
+        return $value;
     }
 }

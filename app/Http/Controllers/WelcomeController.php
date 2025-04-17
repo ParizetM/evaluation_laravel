@@ -27,7 +27,7 @@ class WelcomeController extends Controller
          * @var User
          */
         $user = Auth::user();
-        if ($user && $user->isA('user')) {
+        if ($user->isA('user')) {
             // Get current date/time
             $now = now();
 
@@ -52,7 +52,7 @@ class WelcomeController extends Controller
                 'user' => $user,
 
             ]);
-        } if ($user && $user->isA('admin')) {
+        } if ($user->isA('admin')) {
             // Get current date/time
             $now = now();
 
@@ -164,7 +164,7 @@ class WelcomeController extends Controller
         // Assuming 9-hour workday
         $totalPossibleHours = 9;
 
-        return ($totalPossibleHours > 0) ? ($totalReservationHours / $totalPossibleHours) * 100 : 0;
+        return ($totalReservationHours / $totalPossibleHours) * 100;
     }
     /**
      * Calculate monthly occupancy rate for a given month

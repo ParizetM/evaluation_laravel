@@ -43,7 +43,6 @@ class Role extends BouncerRole      // @phpstan-ignore-line
      */
     use HasFactory;
 
-    use LogAction;
 
     public const ADMIN = 'admin';
 

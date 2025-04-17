@@ -12,12 +12,12 @@ class SalleModelRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return env('APP_ENV') == 'testing'
-            ? true
-            : Auth::user()->can('salle-create');
-    }
+    // public function authorize()
+    // {
+    //     return env('APP_ENV') == 'testing'
+    //         ? true
+    //         : Auth::user()->can('salle-create');
+    // }
 
     /**
      * Get the validation rules that apply to the request.
