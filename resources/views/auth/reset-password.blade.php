@@ -1,47 +1,39 @@
-<!DOCTYPE html>
+<x-guest-layout>
+    <form method="POST" action="{{ route('password.store') }}">
+        @csrf
 
-<html lang="fr">
+        <!-- Password Reset Token -->
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-<head>
-  @vite(['resources/scss/app.scss', 'resources/js/app.js'])
-</head>
-
-<body>
-  <div class="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card-group d-block d-md-flex row">
-            <div class="card col-md-7 p-4 mb-0">
-              <div class="card-body">
-
-                <form method="POST" action="{{ route('password.store') }}">
-                  @csrf
-
-                  <!-- Password Reset Token -->
-                  <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-                  <h1>Définir votre nouveau mot de passe</h1>
-
-                  <x-inputs.input-email property="email" label="<i class='fa-light fa-at me-3'></i>Email" :entity="null" required="true" autofocus="true" />
-
-                  <x-inputs.input-password property="password" label="<i class='fa-light fa-unlock-keyhole me-3'></i>Mot de passe" :entity="null" required="true" />
-
-                  <x-inputs.input-password property="password_confirmation" label="<i class='fa-light fa-unlock-keyhole me-3'></i>Mot de passe" :entity="null" required="true" />
-
-                  <div class="row">
-                    <div class="col-12">
-                      <button class="btn btn-primary px-4" type="submit ">{{ __('Reset Password') }}</button>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
-            </div>
-          </div>
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-      </div>
-    </div>
-</body>
 
-</html>
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button>
+                {{ __('Reset Password') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>

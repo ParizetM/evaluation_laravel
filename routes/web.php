@@ -1,23 +1,11 @@
 <?php
-
-use App\Http\Controllers\Admin\ArchiveController;
-use App\Http\Controllers\Admin\LieuController;
-use App\Http\Controllers\Admin\SyntheseController;
-use App\Http\Controllers\Conge\AbsenceController;
-use App\Http\Controllers\Conge\MotifController;
-use App\Http\Controllers\Felis\MaillardController;
-use App\Http\Controllers\Planning\categorieController;
-use App\Http\Controllers\Planning\PlanningController;
-use App\Http\Controllers\Planning\TacheController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Reunion\ReservationController;
+use App\Http\Controllers\Reunion\SalleController;
 use App\Http\Controllers\WelcomeController;
-use App\Models\Admin\Archive;
-use App\Models\Admin\Lieu;
-use App\Models\Conge\Absence;
-use App\Models\Conge\Motif;
-use App\Models\Planning\categorie;
-use App\Models\Planning\Planning;
-use App\Models\User;
+
+use App\Models\Reunion\Reservation;
+use App\Models\Reunion\Salle;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -29,9 +17,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::resource('/planning', PlanningController::class);
-    Route::resource('/absence', AbsenceController::class);
+    Route::get('/salle/{salle_id}/undelete', [SalleController::class, 'undelete'])->name('salle.undelete');
+    Route::bind('salle_id', function ($salle_id) {
+        return Salle::onlyTrashed()->find($salle_id);
+    });
+    Route::get('/salle/json', [SalleController::class, 'json'])->name('salle.json');
+    Route::resource('/salle', SalleController::class);
+    Route::get('/reservation/{reservation_id}/undelete', [ReservationController::class, 'undelete'])->name('reservation.undelete');
+    Route::bind('reservation_id', function ($reservation_id) {
+        return Reservation::onlyTrashed()->find($reservation_id);
+    });
+    Route::get('/reservation/json', [ReservationController::class, 'json'])->name('reservation.json');
+    Route::get('/reservation/mes-reservations', [ReservationController::class, 'mesReservations'])->name('reservation.mes_reservations');
+    Route::resource('/reservation', ReservationController::class);
+    Route::get('/api/check-availability', [ReservationController::class, 'checkAvailability'])->name('api.check-availability');
 
     //
     // route model

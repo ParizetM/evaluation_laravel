@@ -47,7 +47,7 @@ class Role extends BouncerRole      // @phpstan-ignore-line
 
     public const ADMIN = 'admin';
 
-    public const SALARIE = 'salarie';
+    public const SALARIE = 'user';
 
     /**
      * @var list<string>
